@@ -1,58 +1,61 @@
 # ml-demo1
 
-This repo contains the code for the Kasna/Eliiza Google ML Specialisation, demo 1.
+This repo contains the code for the Kasna/Eliiza Google ML Specialisation, demo 1.  For this example we have chosen to use an existing public example of Machine Learning on GCP. 
+
 
 ## Use-Case
 
-Example of an end-to-end TensorFlow pipeline using the Chicago taxi trips dataset (BQ) to improve its service. This demo requires the use of either Cloud AI Platform or Kubeflow (deployed on GKE), with data pre-processing performed using Dataflow, BigQuery, or Dataproc.
+The use-cawse is an example of how to detect anomalies in financial, technical indicators by modeling their expected distribution and thus inform when the Relative Strength Indicator (RSI) is unreliable. RSI is a popular indicator for traders of financial assets, and it can be helpful to understand when it is reliable or not. This example will show how to implement a RSI model using realistic foreign exchange market data, Google Cloud Platform and the Dataflow time-series sample library.
 
 ## Success Criteria
 ### Code
 #### Code Repository
-Partners must provide a link to the code repository (e.g., GitHub, GitLab, GCP CSR), which includes a ReadMe file.
 
-*Evidence* must include an active link to the code repository containing all code that is used in demo # 1. This code must be reviewable/readable by the assessor, and modifiable by the customer. In addition, the repository should contain a ReadMe file with code descriptions and detailed instructions for running model/application.
+The public source repository is availble on the [Kasna Cloud github page](https://github.com/kasna-cloud/dataflow-fsi-example).
+This repo contains all of the source, infrastructure build and run tools for the example as well as information on the [creation and deployment of the ML model](https://github.com/kasna-cloud/dataflow-fsi-example/tree/main/notebooks).
+
+Detailed documentation and a blog are also available in the [docs](https://github.com/kasna-cloud/dataflow-fsi-example/tree/main/docs) folder of the repo.
 
 #### Code origin certification
-Partners must certify to either of these two scenarios: 1) all code is original and developed within the partner organization, or 2) licensed code is used, post-modification.
+Kasna certifies that all code within this repository is original and developed by Kasna/Eliiza and licensned under the MIT open-source license as defined [here](https://github.com/kasna-cloud/dataflow-fsi-example/blob/main/LICENSE).
 
-*Evidence* must include a certification by the partner organization for either of the above code origin scenarios. In addition, if licensed code is used post-modification, the partner must certify that the code has been modified per license specifications.
+All libraries and open-sourced code used in this project has not been modified and is used under the relevant library/code license.
 
 ### Data
 #### Dataset in GCP
-Partners must provide documentation of where the data of demo #1 is stored within GCP (for access by the ML models during training, testing, and in production).
-
-*Evidence* must include the project name and project ID for the Google Cloud Storage bucket or BigQuery dataset with the data (for demo #1).
+This project utilises a data generator to create realistic foreign exchange price pairs. Implementation details of this data generator are available within the [forexgenerator.py](https://github.com/kasna-cloud/dataflow-fsi-example/blob/main/app/python/src/forexgenerator/forexgenerator.py) program. During deployment of the project, this generator is run from a GKE cluster and scaled to generate the desired pair volumes.
 
 ### Whitepaper/Blog post
 #### Business Goal and ML Solution
-Partners must describe:
-* The business question/goal being addressed.
-* The ML use case.
-* How ML solution is expected to address the business question/goal?
 
-*Evidence* must include (in the Whitepaper) a top-line description of the business question/goal being addressed in this demo, and how the proposed ML solution will address this business goal.
+The Relative Strength Index, or RSI, is a popular financial technical indicator that measures the magnitude of recent price changes to evaluate whether an asset is currently overbought or oversold.
+
+The general approach regarding the RSI is to be used as a mean-reversion trading strategy:
+
+* When the RSI for an asset is less than 30, traders should buy this asset as the price is expected to increase in the near future.
+* When the RSI for an asset is greater than 70, traders should sell this asset as the price is expected to decrease in the near future.
+As a simplified rule, this strategy cannot be trusted to work favorably at all times. Therefore in these instances (i.e. RSI > 70 or RSI less than 30), it would be useful to know if the RSI is a reliable indicator to inform a trade or not.
+
+The full blog/whitepaper which details this use-case can be found in the project repo [here](https://github.com/kasna-cloud/dataflow-fsi-example/blob/main/docs/BLOG.md).
+
+In addition, Google published another version which was created by Kasna/Eliiza and is available on the [Google website](https://cloud.google.com/blog/topics/financial-services/detect-anomalies-in-real-time-forex-data-with-ml). 
 
 #### Data Exploration
-Partners must describe the following:
-* How and what type of data exploration was performed?
-* What decisions were influenced by data exploration?
-
-*Evidence* must include a description (in the Whitepaper) of the tools used and the type(s) of data exploration performed, along with code snippets (that accomplish the data exploration).  Additionally, the whitepaper must describe how the data/model algorithm/architecture decisions were influenced by the data exploration.
+Data exploration and discovery for this project is explained in the Jyupyter notebook available [here](https://github.com/kasna-cloud/dataflow-fsi-example/blob/main/notebooks/example_data_exploration.ipynb). This notebook explains how and what type of data exploration was performed and what decisions were influenced by data exploration for model creation.
 
 #### Feature Engineering
-Partners must describe the following:
-* What feature engineering was performed?
-* What features were selected for use in the ML model and why?
-
-*Evidence* must include a description (in the Whitepaper) of the feature engineering performed (and rationale for the same), what original and engineered features were selected for incorporation as independent predictors in the ML model, and why. Evidence must include code snippets detailing the feature engineering and feature selection steps.
+Feature engineering for the LSTM model is detailed within the two Jupyter notebooks used in the project. These are:
+* [Data Exploration notebook](https://github.com/kasna-cloud/dataflow-fsi-example/blob/main/notebooks/example_data_exploration.ipynb)
+* [TFX Training Pipeline](https://github.com/kasna-cloud/dataflow-fsi-example/blob/main/notebooks/example_tfx_training_pipeline.ipynb)
 
 #### Preprocessing and the data pipeline
-The partner must describe the data preprocessing pipeline, and how this is accomplished via a package/function that is a callable API (that is ultimately accessed by the served, production model).
+The TFX pipline code is within the repository source and explained in the [TFX Training Pipeline](https://github.com/kasna-cloud/dataflow-fsi-example/blob/main/notebooks/example_tfx_training_pipeline.ipynb) notebook and the pipeline components are described [here](https://github.com/kasna-cloud/dataflow-fsi-example/blob/main/docs/COMPONENTS.md).
 
-*Evidence* must include a description (in the Whitepaper) of how data preprocessing is accomplished using Dataflow, BigQuery and/or Dataproc, along with the code snippet that accomplishes data preprocessing as a callable API.
+This documentation includes the data preprocessing pipeline, training and model serving.
 
 #### ML Model Desgin(s) and Selection
+
+
 Partners must describe the following:
 * Which ML model/algorithm(s) were chosen for demo #1?
 * What criteria were used for ML model selection?
