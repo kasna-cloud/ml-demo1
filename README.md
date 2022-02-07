@@ -38,7 +38,7 @@ As a simplified rule, this strategy cannot be trusted to work favorably at all t
 
 The full blog/whitepaper which details this use-case can be found in the project repo [here](https://github.com/kasna-cloud/dataflow-fsi-example/blob/main/docs/BLOG.md).
 
-In addition, Google published another version which was created by Kasna/Eliiza and is available on the [Google website](https://cloud.google.com/blog/topics/financial-services/detect-anomalies-in-real-time-forex-data-with-ml). 
+Additionally, Google published another version which was created by Kasna/Eliiza and is available on the [Google website](https://cloud.google.com/blog/topics/financial-services/detect-anomalies-in-real-time-forex-data-with-ml). 
 
 #### Data Exploration
 Data exploration and discovery for this project is explained in the Jyupyter notebook available [here](https://github.com/kasna-cloud/dataflow-fsi-example/blob/main/notebooks/example_data_exploration.ipynb). This notebook explains how and what type of data exploration was performed and what decisions were influenced by data exploration for model creation.
@@ -54,48 +54,33 @@ The TFX pipline code is within the repository source and explained in the [TFX T
 This documentation includes the data preprocessing pipeline, training and model serving.
 
 #### ML Model Desgin(s) and Selection
-
-
-Partners must describe the following:
-* Which ML model/algorithm(s) were chosen for demo #1?
-* What criteria were used for ML model selection?
-
-*Evidence* must describe (in the Whitepaper) selection criteria implemented, as well as the specific ML model algorithms that were selected for training and evaluation purposes. Code snippets detailing the model design and selection steps must be enumerated.
+Model selection is detailed within the [Data Exploration notebook](https://github.com/kasna-cloud/dataflow-fsi-example/blob/main/notebooks/example_data_exploration.ipynb) as well as the 
+[blog](https://github.com/kasna-cloud/dataflow-fsi-example/blob/main/docs/BLOG.md).
 
 #### ML model training and development
-Partners must document the use of Cloud AI Platform or Kubeflow for ML model training, and describe the following:
-* Dataset sampling used for model training (and for independent dev/test datasets) and justification of sampling methods.
-* Implementation of model training, including adherence to GCP best practices for distribution, device usage, and monitoring.
+The ML model training is described in the [TFX Training Pipeline](https://github.com/kasna-cloud/dataflow-fsi-example/blob/main/notebooks/example_tfx_training_pipeline.ipynb) notebook as well as the [blog](https://github.com/kasna-cloud/dataflow-fsi-example/blob/main/docs/BLOG.md).
+These documents include the following aspects of training:
+* Dataset sampling used for model training (and for independent dev/test datasets) and justification of sampling methods. [link](https://github.com/kasna-cloud/dataflow-fsi-example/blob/main/docs/BLOG.md#training-the-model-in-tensorflow-extended-tfx-using-dataflow-kubernetes-engine-and-ai-platform)
+* Implementation of model training, including adherence to GCP best practices for distribution, device usage, and monitoring. [link](https://github.com/kasna-cloud/dataflow-fsi-example/blob/main/docs/BLOG.md#training-the-model-in-tensorflow-extended-tfx-using-dataflow-kubernetes-engine-and-ai-platform)
 * The model evaluation metric that is implemented, and a discussion of why the implemented metric is optimal given the business question/goal being addressed.
-* Hyper-parameter tuning and model performance optimization.
-* How bias/variance were determined (from the train-dev datasets) and tradeoffs used to influence and optimize ML model architecture?
-
-*Evidence* must describe (in the Whitepaper) each of the ML model training and development bullet points (above). In addition, code snippets that accomplish each of these tasks need to be enumerated.
+    > The TFX Trainer component then trains the model by minimising the loss function: mean squared error between the input features and model output. The model’s evaluation metric is also the mean squared error.
+    > We experimented with different model window sizes to minimise the evaluation metric. You can also experiment with different model window sizes by changing LSTM_WINDOW_LENGTH in config.sh. This value represents how much time we are looking across to detect anomalies. So for example, with a window size of 5 elements and Dataflow sample library parameter METRICS_TYPE_1_WINDOW_SECS = 1, each window represents 5 seconds of metrics. The table below contains the summarised details, you can see that the model achieves the best (lowest) evaluation metric with a window size of 30. 
+* Hyper-parameter tuning and model performance optimization. [link](https://github.com/kasna-cloud/dataflow-fsi-example/blob/main/notebooks/example_tfx_training_pipeline.ipynb)
+    > Here we manually run the trained model on the evaluation dataset and compute the reconstruction error (RE). Anomalies are determined by comparing RE to a threshold. The threshold is selected by assuming a target anomaly rate of 10%. The anomalies are then plotted.
+    > Note that we must evaluate the model in this way because the TFX Evaluator component cannot be used as it currently does not handle model output variables created in the Transform component, which is a requirement for autoencoder models.
+* How bias/variance were determined (from the train-dev datasets) and tradeoffs used to influence and optimize ML model architecture? [link](https://github.com/kasna-cloud/dataflow-fsi-example/blob/main/notebooks/example_tfx_training_pipeline.ipynb)
 
 #### ML Model Evaluation
-Partners must describe how the ML model, post-training, and architectural/hyperparameter optimization performs on an independent test dataset.
-
-*Evidence* must include records/data (in the Whitepaper) of how the ML model developed and selected to address the business question performance on an independent test dataset (that reflects the distribution of data that the ML model is expected to encounter in a production environment). In addition, code snippets on model testing need to be enumerated.
+The ML model, re-training and evaluation are described in the notebook [TFX Training Pipeline](https://github.com/kasna-cloud/dataflow-fsi-example/blob/main/notebooks/example_tfx_training_pipeline.ipynb)
 
 ### Proof of Deployment
 #### Model application on GCP 
-Partners must provide proof that the ML model/application is deployed and served on GCP with Cloud AI Platform or Kubeflow.
-
-*Evidence* must include the Project Name and Project ID of the deployed cloud machine learning model and client.
+The repo contains all of the scripting and tools required to deploy to GCP.
 
 #### Callable library/application
-Partners must demonstrate that the ML model for demo #1 is a callable library and/or application.
-
-*Evidence* must include a demonstration of how the served model can be used to make a prediction via an API call.
+The model is deployed to AI Platform and served as per the [FLOW diagram](https://github.com/kasna-cloud/dataflow-fsi-example/blob/main/docs/FLOWS.md) 
 
 #### Editable model/application
-Partners must demonstrate that the deployed model is customizable.
-
-*Evidence* must include a demonstration that the deployed model is fully functional after an appropriate code modification, as might be performed by a customer.
-
-
-
-
-
+Any of the model parameters can be changed within the source code [trainer.py](https://github.com/kasna-cloud/dataflow-fsi-example/blob/main/app/python/src/tfx_components/trainer.py)
 
 
