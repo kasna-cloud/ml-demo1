@@ -3,30 +3,30 @@
 This repo contains the code for the Kasna/Eliiza Google ML Specialisation, demo 1.  For this example we have chosen to use an existing public example of Machine Learning on GCP. 
 
 
-## Use-Case
+## 2 Use-Case
 
 The use-cawse is an example of how to detect anomalies in financial, technical indicators by modeling their expected distribution and thus inform when the Relative Strength Indicator (RSI) is unreliable. RSI is a popular indicator for traders of financial assets, and it can be helpful to understand when it is reliable or not. This example will show how to implement a RSI model using realistic foreign exchange market data, Google Cloud Platform and the Dataflow time-series sample library.
 
-## Success Criteria
-### Code
-#### Code Repository
+## 3.1 Success Criteria
+### 3.1.1 Code
+#### 3.1.1.1 Code Repository
 
 The public source repository is availble on the [Kasna Cloud github page](https://github.com/kasna-cloud/dataflow-fsi-example).
 This repo contains all of the source, infrastructure build and run tools for the example as well as information on the [creation and deployment of the ML model](https://github.com/kasna-cloud/dataflow-fsi-example/tree/main/notebooks).
 
 Detailed documentation and a blog are also available in the [docs](https://github.com/kasna-cloud/dataflow-fsi-example/tree/main/docs) folder of the repo.
 
-#### Code origin certification
+#### 3.1.1.2 Code origin certification
 Kasna certifies that all code within this repository is original and developed by Kasna/Eliiza and licensned under the MIT open-source license as defined [here](https://github.com/kasna-cloud/dataflow-fsi-example/blob/main/LICENSE).
 
 All libraries and open-sourced code used in this project has not been modified and is used under the relevant library/code license.
 
-### Data
-#### Dataset in GCP
+### 3.1.2 Data
+#### 3.1.2.1 Dataset in GCP
 This project utilises a data generator to create realistic foreign exchange price pairs. Implementation details of this data generator are available within the [forexgenerator.py](https://github.com/kasna-cloud/dataflow-fsi-example/blob/main/app/python/src/forexgenerator/forexgenerator.py) program. During deployment of the project, this generator is run from a GKE cluster and scaled to generate the desired pair volumes.
 
-### Whitepaper/Blog post
-#### Business Goal and ML Solution
+### 3.1.3 Whitepaper/Blog post
+#### 3.1.3.1 Business Goal and ML Solution
 
 The Relative Strength Index, or RSI, is a popular financial technical indicator that measures the magnitude of recent price changes to evaluate whether an asset is currently overbought or oversold.
 
@@ -40,24 +40,24 @@ The full blog/whitepaper which details this use-case can be found in the project
 
 Additionally, Google published another version which was created by Kasna/Eliiza and is available on the [Google website](https://cloud.google.com/blog/topics/financial-services/detect-anomalies-in-real-time-forex-data-with-ml). 
 
-#### Data Exploration
+#### 3.1.3.2 Data Exploration
 Data exploration and discovery for this project is explained in the Jyupyter notebook available [here](https://github.com/kasna-cloud/dataflow-fsi-example/blob/main/notebooks/example_data_exploration.ipynb). This notebook explains how and what type of data exploration was performed and what decisions were influenced by data exploration for model creation.
 
-#### Feature Engineering
+#### 3.1.3.3 Feature Engineering
 Feature engineering for the LSTM model is detailed within the two Jupyter notebooks used in the project. These are:
 * [Data Exploration notebook](https://github.com/kasna-cloud/dataflow-fsi-example/blob/main/notebooks/example_data_exploration.ipynb)
 * [TFX Training Pipeline](https://github.com/kasna-cloud/dataflow-fsi-example/blob/main/notebooks/example_tfx_training_pipeline.ipynb)
 
-#### Preprocessing and the data pipeline
+#### 3.1.3.4 Preprocessing and the data pipeline
 The TFX pipline code is within the repository source and explained in the [TFX Training Pipeline](https://github.com/kasna-cloud/dataflow-fsi-example/blob/main/notebooks/example_tfx_training_pipeline.ipynb) notebook and the pipeline components are described [here](https://github.com/kasna-cloud/dataflow-fsi-example/blob/main/docs/COMPONENTS.md).
 
 This documentation includes the data preprocessing pipeline, training and model serving.
 
-#### ML Model Desgin(s) and Selection
+#### 3.1.3.5 ML Model Desgin(s) and Selection
 Model selection is detailed within the [Data Exploration notebook](https://github.com/kasna-cloud/dataflow-fsi-example/blob/main/notebooks/example_data_exploration.ipynb) as well as the 
 [blog](https://github.com/kasna-cloud/dataflow-fsi-example/blob/main/docs/BLOG.md).
 
-#### ML model training and development
+#### 3.1.3.6 ML model training and development
 The ML model training is described in the [TFX Training Pipeline](https://github.com/kasna-cloud/dataflow-fsi-example/blob/main/notebooks/example_tfx_training_pipeline.ipynb) notebook as well as the [blog](https://github.com/kasna-cloud/dataflow-fsi-example/blob/main/docs/BLOG.md).
 These documents include the following aspects of training:
 * Dataset sampling used for model training (and for independent dev/test datasets) and justification of sampling methods. [link](https://github.com/kasna-cloud/dataflow-fsi-example/blob/main/docs/BLOG.md#training-the-model-in-tensorflow-extended-tfx-using-dataflow-kubernetes-engine-and-ai-platform)
@@ -70,17 +70,16 @@ These documents include the following aspects of training:
     > Note that we must evaluate the model in this way because the TFX Evaluator component cannot be used as it currently does not handle model output variables created in the Transform component, which is a requirement for autoencoder models.
 * How bias/variance were determined (from the train-dev datasets) and tradeoffs used to influence and optimize ML model architecture? [link](https://github.com/kasna-cloud/dataflow-fsi-example/blob/main/notebooks/example_tfx_training_pipeline.ipynb)
 
-#### ML Model Evaluation
+#### 3.1.3.7 ML Model Evaluation
 The ML model, re-training and evaluation are described in the notebook [TFX Training Pipeline](https://github.com/kasna-cloud/dataflow-fsi-example/blob/main/notebooks/example_tfx_training_pipeline.ipynb)
 
-### Proof of Deployment
-#### Model application on GCP 
+### 3.1.4 Proof of Deployment
+#### 3.14.1 Model application on GCP 
 The repo contains all of the scripting and tools required to deploy to GCP.
 
-#### Callable library/application
+#### 3.1.4.2 Callable library/application
 The model is deployed to AI Platform and served as per the [FLOW diagram](https://github.com/kasna-cloud/dataflow-fsi-example/blob/main/docs/FLOWS.md) 
 
-#### Editable model/application
+#### 3.1.4.3 Editable model/application
 Any of the model parameters can be changed within the source code [trainer.py](https://github.com/kasna-cloud/dataflow-fsi-example/blob/main/app/python/src/tfx_components/trainer.py)
-
 
