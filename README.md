@@ -2,13 +2,14 @@
 
 This repo contains the code for the Kasna/Eliiza Google ML Specialisation, demo 1.  For this example we have chosen to use an existing public example of Machine Learning on GCP. 
 
-
 ## 2 Use-Case
 
 The use-cawse is an example of how to detect anomalies in financial, technical indicators by modeling their expected distribution and thus inform when the Relative Strength Indicator (RSI) is unreliable. RSI is a popular indicator for traders of financial assets, and it can be helpful to understand when it is reliable or not. This example will show how to implement a RSI model using realistic foreign exchange market data, Google Cloud Platform and the Dataflow time-series sample library.
 
 ## 3.1 Success Criteria
 ### 3.1.1 Code
+---
+
 #### 3.1.1.1 Code Repository
 
 The public source repository is availble on the [Kasna Cloud github page](https://github.com/kasna-cloud/dataflow-fsi-example).
@@ -22,10 +23,14 @@ Kasna certifies that all code within this repository is original and developed b
 All libraries and open-sourced code used in this project has not been modified and is used under the relevant library/code license.
 
 ### 3.1.2 Data
+---
+
 #### 3.1.2.1 Dataset in GCP
 This project utilises a data generator to create realistic foreign exchange price pairs. Implementation details of this data generator are available within the [forexgenerator.py](https://github.com/kasna-cloud/dataflow-fsi-example/blob/main/app/python/src/forexgenerator/forexgenerator.py) program. During deployment of the project, this generator is run from a GKE cluster and scaled to generate the desired pair volumes.
 
 ### 3.1.3 Whitepaper/Blog post
+---
+
 #### 3.1.3.1 Business Goal and ML Solution
 
 The Relative Strength Index, or RSI, is a popular financial technical indicator that measures the magnitude of recent price changes to evaluate whether an asset is currently overbought or oversold.
@@ -74,7 +79,9 @@ These documents include the following aspects of training:
 The ML model, re-training and evaluation are described in the notebook [TFX Training Pipeline](https://github.com/kasna-cloud/dataflow-fsi-example/blob/main/notebooks/example_tfx_training_pipeline.ipynb)
 
 ### 3.1.4 Proof of Deployment
-#### 3.14.1 Model application on GCP 
+---
+
+#### 3.1.4.1 Model application on GCP 
 The repo contains all of the scripting and tools required to deploy to GCP.
 
 #### 3.1.4.2 Callable library/application
